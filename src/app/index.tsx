@@ -2,6 +2,7 @@ import { View, Image } from "react-native"
 import { Input } from "@/components/input"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { colors } from "@/styles/colors"
+import { Button } from "@/components/button"
 
 export default function Home(){
     return(
@@ -17,8 +18,9 @@ export default function Home(){
                 size={20} 
                 color={colors.green[200]}/>
                     <Input.Field placeholder="Insira o seu codigo de ingresso"/>
-                    
                 </Input>
+
+                <Button title="Acessar codigo" />
             </View>
         </View>
     )
