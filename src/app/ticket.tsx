@@ -72,15 +72,15 @@ export default function Ticket(){
 
                 <Button title="Compartilhar" />
 
-                <TouchableOpacity activeOpacity={0.7} className="mt-10">
+                <Pressable className="mt-10">
                     <Text className="text-base text-white font-bold text-center">Remover Ingresso</Text>
-                </TouchableOpacity>
+                </Pressable>
             </ScrollView>
 
             <Modal visible={expandQRCode} statusBarTranslucent animationType="slide">
                 <View className="flex-1 bg-green-500 items-center justify-center">
                     <Pressable className="" onPress={() => setExpandQRCode(false)}>
-                        <QRCodeSvg value="https://github.com/retr0lbb" size={300} />
+                        <QRCodeSvg value="penmenship" size={300} />
                         <Text className="font-body text-orange-500 text-sm text-center mt-10">Fechar QRCode</Text>
                     </Pressable>
                 </View>

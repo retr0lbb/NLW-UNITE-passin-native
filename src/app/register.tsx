@@ -1,22 +1,55 @@
-import { View, Image, StatusBar, Alert } from "react-native"
+import { View, Image, StatusBar, Alert, findNodeHandle } from "react-native"
 import { Input } from "@/components/input"
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons"
 import { colors } from "@/styles/colors"
 import { Button } from "@/components/button"
 import { Link, router } from "expo-router"
 import { useState } from "react"
+import { api } from "@/server/api"
+import axios, { AxiosError } from "axios"
+import { err } from "react-native-svg"
 
 
 export default function Register(){
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
-    function handleRegister(){
-        if(!fullName.trim() || !email.trim()){
+    async function handleRegister(){
+        if(!fullName.trim() || !email.trim() || fullName.trim().length < 4){
             return Alert.alert("Inscrição", "Preencha todos os campos")
         }
+        try {
+            setIsLoading(true)
 
-        router.push("/ticket")
+            const registerResponse = await api.post("/events/ea15b680-4105-4ec4-a420-dc0624421622/attendees", {
+                name: fullName,
+                email: email
+            })
+
+            if(registerResponse.data.attendeeId){
+                Alert.alert("Inscrição", "inscrição realizada com sucesso", [
+                    {
+                        text: "Ok",
+                        onPress: ()=> {
+                            router.push("/ticket")
+                        }
+                    }
+                ])
+            }
+
+        } catch (error) {
+            if(axios.isAxiosError(error)){
+                if(String(error.response?.data.message).includes("already register")){
+                    return Alert.alert("Inscrição", "Esse email já esta cadastrado!")
+                }
+            }
+
+            Alert.alert("Inscrição", "Um erro ocorreu")
+        }finally{
+            setIsLoading(false)
+        }
+        
     }
 
     return(
@@ -55,7 +88,7 @@ export default function Register(){
                      value={email}/>
                 </Input>
 
-                <Button onPress={handleRegister} title="Realizar inscrição"/>
+                <Button onPress={handleRegister} title="Realizar inscrição" isLoading={isLoading}/>
 
                 <Link href="/" className="text-gray-100 text-base font-bold text-center mt-8">
                     Já possui ingresso?
