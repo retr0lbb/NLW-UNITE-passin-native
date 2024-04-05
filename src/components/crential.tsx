@@ -1,16 +1,18 @@
-import { View, Image, ImageBackground, Text, Pressable, TouchableOpacity } from "react-native";
+import { View, Image, ImageBackground, Text, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons"
 import { colors } from "@/styles/colors";
 import QRCodeSvg from "./qrcode";
+import {BadgeStore} from "@/store/badge-store"
 
 
 type Props = {
     image?: string,
     onChangeAvatar?: () => void,
-    onShowQRCode?: ()=> void
+    onShowQRCode?: ()=> void,
+    data: BadgeStore
 }
 
-export default function Credential({ image, onChangeAvatar, onShowQRCode }: Props){
+export default function Credential({ image, onChangeAvatar, onShowQRCode, data }: Props){
     return(
         <View className="w-full self-stretch items-center">
             <Image 
@@ -29,8 +31,12 @@ export default function Credential({ image, onChangeAvatar, onShowQRCode }: Prop
                         self-stretch border-b border-white/10 overflow-hidden" >
                             
                             <View className="w-full flex-row items-center justify-between">
-                                <Text className="text-zinc-50 text-sm font-bold">Unite Summit</Text>
-                                <Text className="text-zinc-50 text-sm font-bold">#123</Text>
+                                <Text className="text-zinc-50 text-sm font-bold">
+                                    {data.eventTitle}
+                                </Text>
+                                <Text className="text-zinc-50 text-sm font-bold">
+                                    #{String(data.id).padStart(4 , "0")}
+                                </Text>
                             </View>
 
                             <View className="w-40 h-40 bg-black rounded-full"/>
@@ -56,11 +62,15 @@ export default function Credential({ image, onChangeAvatar, onShowQRCode }: Prop
 
                 
 
-                <Text className="font-bold text-2xl text-zinc-50 mt-4">Henrique Barbosa</Text>
-                <Text className="font-regular text-base text-zinc-300 mb-4">retr0lbb@gmail.com</Text>
+                <Text className="font-bold text-2xl text-zinc-50 mt-4">
+                    {data.name}
+                </Text>
+                <Text className="font-regular text-base text-zinc-300 mb-4">
+                    {data.email}
+                </Text>
 
 
-                <QRCodeSvg value="redman" size={120} />
+                <QRCodeSvg value={String(data.checkInURL)} size={120} />
 
                 <Pressable className="mt-6" onPress={onShowQRCode}>
                     <Text className="font-body text-orange-500 text-sm">Ampliar QRCode</Text>

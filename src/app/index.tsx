@@ -3,14 +3,17 @@ import { Input } from "@/components/input"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { colors } from "@/styles/colors"
 import { Button } from "@/components/button"
-import { Link } from "expo-router"
+import { Link, Redirect } from "expo-router"
 import {useState} from "react"
 import { api } from "@/server/api"
+import {useBadgeStore} from "@/store/badge-store"
 
 
 export default function Home(){
     const [code, setCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    
+    const badgeStore = useBadgeStore()
 
     async function handleAcessCredential(){
         try {
@@ -19,9 +22,14 @@ export default function Home(){
             }
     
             setIsLoading(true)
-           const { data } = await api.get(`/attendees/${code}/badge`)
+            const { data } = await api.get(`/attendees/${code}/badge`)
+
+            badgeStore.save(data.badge)
+
+           
 
         } catch (error) {
+
             console.log(error)
             setIsLoading(false)
             Alert.alert("Ingresso", "Ingresso não encontrado")
@@ -29,6 +37,9 @@ export default function Home(){
     }
 
 
+    if(badgeStore.data?.checkInURL){
+        return <Redirect href="/ticket" />
+    }
     return(
         <View className="flex-1 bg-green-500 items-center justify-center p-8">
             <StatusBar barStyle="dark-content" />
@@ -50,7 +61,7 @@ export default function Home(){
                     />
                 </Input>
 
-                <Button onPress={handleAcessCredential} title="Acessar Credencial"/>
+                <Button onPress={handleAcessCredential} isLoading={isLoading} title="Acessar Credencial"/>
                 <Link href="/register" className="text-gray-100 text-base font-bold text-center mt-8">
                     Ainda não possui ingresso?
                 </Link>

@@ -7,12 +7,15 @@ import { Link, router } from "expo-router"
 import { useState } from "react"
 import { api } from "@/server/api"
 import axios from "axios"
+import { useBadgeStore } from "@/store/badge-store"
 
 
 export default function Register(){
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+
+    const badgeStore = useBadgeStore()
 
     async function handleRegister(){
         if(!fullName.trim() || !email.trim() || fullName.trim().length < 4){
@@ -27,6 +30,11 @@ export default function Register(){
             })
 
             if(registerResponse.data.attendeeId){
+
+                const badgeResponse = await api.get(`attendees/${registerResponse.data.attendeeId}/badge`)
+
+                badgeStore.save(badgeResponse.data.badge)
+
                 Alert.alert("Inscrição", "inscrição realizada com sucesso", [
                     {
                         text: "Ok",
