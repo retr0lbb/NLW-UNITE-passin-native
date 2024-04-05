@@ -1,7 +1,16 @@
-import { View, Image, ImageBackground, Text, Pressable } from "react-native";
+import { View, Image, ImageBackground, Text, Pressable, TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons"
+import { colors } from "@/styles/colors";
+import QRCodeSvg from "./qrcode";
 
 
-export default function Credential(){
+type Props = {
+    image?: string,
+    onChangeAvatar?: () => void,
+    onShowQRCode?: ()=> void
+}
+
+export default function Credential({ image, onChangeAvatar, onShowQRCode }: Props){
     return(
         <View className="w-full self-stretch items-center">
             <Image 
@@ -26,19 +35,34 @@ export default function Credential(){
 
                             <View className="w-40 h-40 bg-black rounded-full"/>
                 </ImageBackground>
-                <Image 
-                source={{ uri: "https://github.com/retr0lbb.png"}} 
-                className="w-36 h-36 rounded-full -mt-24" />
+                
+                {
+                    image ? 
+                    (
+                        <Pressable onPress={onChangeAvatar}>
+                            <Image 
+                            source={{ uri: image}} 
+                            className="w-36 h-36 rounded-full -mt-24" 
+                            />
+                        </Pressable>
+                    ) : (
+                        <Pressable onPress={onChangeAvatar} className="w-36 h-36 
+                        rounded-full -mt-24 bg-gray-400 items-center justify-center">
+                            <Feather name="camera" color={colors.green[400]} size={32}/>
+                        </Pressable>
+                    )
+                }
+               
+
+                
 
                 <Text className="font-bold text-2xl text-zinc-50 mt-4">Henrique Barbosa</Text>
                 <Text className="font-regular text-base text-zinc-300 mb-4">retr0lbb@gmail.com</Text>
 
-                <Image 
-                    source={require("@/assets/ticket/qrcode.png")}
-                    className="w-32 h-32" 
-                />
 
-                <Pressable className="mt-6">
+                <QRCodeSvg value="redman" size={120} />
+
+                <Pressable className="mt-6" onPress={onShowQRCode}>
                     <Text className="font-body text-orange-500 text-sm">Ampliar QRCode</Text>
                 </Pressable>
             </View>
