@@ -19,7 +19,7 @@ import { useState } from "react";
 import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker"
 import { Redirect } from "expo-router";
 import QRCodeSvg from "@/components/qrcode";
-import { err } from "react-native-svg";
+import { MotiView } from "moti"
 
 
 export default function Ticket(){
@@ -63,7 +63,6 @@ export default function Ticket(){
         return <Redirect href="/" />
     }
 
-    console.log(badgeStore.data)
     return(
         <View className="flex-1 bg-green-500">
             <StatusBar barStyle="light-content" />
@@ -80,12 +79,25 @@ export default function Ticket(){
                     onShowQRCode={() => setExpandQRCode(true)}
                     data={badgeStore.data}
                 />
-
-                <FontAwesome name="angle-double-down" 
-                    size={24} 
-                    color={colors.gray[300]} 
-                    className="self-center my-6"
-                />
+                <MotiView
+                    from={{
+                        translateY: 0
+                    }}
+                    animate={{
+                        translateY: 10
+                    }}
+                    transition={{
+                        loop: true,
+                        type: "timing",
+                        duration: 700
+                    }}
+                >
+                    <FontAwesome name="angle-double-down" 
+                        size={24} 
+                        color={colors.gray[300]} 
+                        className="self-center my-6"
+                    />
+                </MotiView>
 
                 <Text className="text-white font-bold text-2xl mt-4">
                     Compartilhar credencial
