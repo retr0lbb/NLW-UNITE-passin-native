@@ -6,8 +6,7 @@ import { Button } from "@/components/button"
 import { Link, router } from "expo-router"
 import { useState } from "react"
 import { api } from "@/server/api"
-import axios, { AxiosError } from "axios"
-import { err } from "react-native-svg"
+import axios from "axios"
 
 
 export default function Register(){
@@ -39,6 +38,7 @@ export default function Register(){
             }
 
         } catch (error) {
+            setIsLoading(false)
             if(axios.isAxiosError(error)){
                 if(String(error.response?.data.message).includes("already register")){
                     return Alert.alert("Inscrição", "Esse email já esta cadastrado!")
@@ -46,10 +46,7 @@ export default function Register(){
             }
 
             Alert.alert("Inscrição", "Um erro ocorreu")
-        }finally{
-            setIsLoading(false)
         }
-        
     }
 
     return(

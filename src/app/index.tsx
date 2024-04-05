@@ -5,14 +5,26 @@ import { colors } from "@/styles/colors"
 import { Button } from "@/components/button"
 import { Link } from "expo-router"
 import {useState} from "react"
+import { api } from "@/server/api"
 
 
 export default function Home(){
-    const [code, setCode] = useState("")
+    const [code, setCode] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    async function handleAcessCredential(){
+        try {
+            if(!code.trim()){
+                return Alert.alert("Ingresso", "Informe o codigo do ingresso")
+            }
     
-    function handleAcessCredential(){
-        if(!code.trim()){
-            return Alert.alert("Ingresso", "Informe o codigo do ingresso")
+            setIsLoading(true)
+           const { data } = await api.get(`/attendees/${code}/badge`)
+
+        } catch (error) {
+            console.log(error)
+            setIsLoading(false)
+            Alert.alert("Ingresso", "Ingresso não encontrado")
         }
     }
 
