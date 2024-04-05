@@ -9,6 +9,7 @@ import {
     View, 
     Text,
     Pressable, 
+    Share
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"
 import { useBadgeStore } from "@/store/badge-store"
@@ -18,14 +19,26 @@ import { useState } from "react";
 import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker"
 import { Redirect } from "expo-router";
 import QRCodeSvg from "@/components/qrcode";
+import { err } from "react-native-svg";
 
 
 export default function Ticket(){
-    const [image, setImage] = useState("")
     const [expandQRCode, setExpandQRCode] = useState(false)
 
     const badgeStore = useBadgeStore()
 
+    async function handleShare() {
+        try {
+            if(badgeStore.data?.checkInURL){
+                await Share.share({
+                    message: String(badgeStore.data.checkInURL)
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Compartilhar", "Não foi possivel compartilhar.")
+        }
+    }
 
     async function handleSelectImage() {
         try {
@@ -36,13 +49,15 @@ export default function Ticket(){
             })
 
             if(result.assets){
-                setImage(result.assets[0].uri)
+                badgeStore.updateAvatar(result.assets[0].uri)
             }
         } catch (error) {
             console.log(error)
             Alert.alert("Foto", "não foi possivel selecionar a imagem.")
         }
     }
+
+
 
     if(!badgeStore.data?.checkInURL){
         return <Redirect href="/" />
@@ -61,7 +76,6 @@ export default function Ticket(){
             >
 
                 <Credential 
-                    image={image} 
                     onChangeAvatar={handleSelectImage}
                     onShowQRCode={() => setExpandQRCode(true)}
                     data={badgeStore.data}
@@ -78,10 +92,11 @@ export default function Ticket(){
                 </Text>
 
                 <Text className="text-white font-regular text-base mt-1 mb-6">
-                    Mostre ao mundo que você vai participar do evento: {badgeStore.data.eventTitle}
+                    Mostre ao mundo que você vai participar do evento: 
+                    {badgeStore.data.eventTitle}
                 </Text>
 
-                <Button title="Compartilhar" />
+                <Button title="Compartilhar" onPress={handleShare} />
 
                 <Pressable className="mt-10" onPress={() => badgeStore.remove()}>
                     <Text className="text-base text-white font-bold text-center">

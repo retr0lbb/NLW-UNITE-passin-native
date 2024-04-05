@@ -6,13 +6,12 @@ import {BadgeStore} from "@/store/badge-store"
 
 
 type Props = {
-    image?: string,
     onChangeAvatar?: () => void,
     onShowQRCode?: ()=> void,
     data: BadgeStore
 }
 
-export default function Credential({ image, onChangeAvatar, onShowQRCode, data }: Props){
+export default function Credential({ onChangeAvatar, onShowQRCode, data }: Props){
     return(
         <View className="w-full self-stretch items-center">
             <Image 
@@ -43,11 +42,11 @@ export default function Credential({ image, onChangeAvatar, onShowQRCode, data }
                 </ImageBackground>
                 
                 {
-                    image ? 
+                    data.image ? 
                     (
                         <Pressable onPress={onChangeAvatar}>
                             <Image 
-                            source={{ uri: image}} 
+                            source={{ uri: String(data.image)}} 
                             className="w-36 h-36 rounded-full -mt-24" 
                             />
                         </Pressable>
