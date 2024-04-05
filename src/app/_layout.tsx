@@ -1,7 +1,6 @@
 import "@/styles/global.css";
 import { Slot } from "expo-router";
-import { StatusBar } from "expo-status-bar"
-import {Loading} from "@/components/loading"
+import { Loading } from "@/components/loading"
 import { 
     Roboto_700Bold, 
     Roboto_400Regular, 
@@ -16,10 +15,11 @@ export default function Layout(){
         Roboto_700Bold
     })
 
+    if(!fontLoaded){
+        return <Loading />
+    }
+
     return(
-        <>
-            <StatusBar style="light" />
-            {fontLoaded? <Slot /> : <Loading />}
-        </>
+        <Slot />
     )
 }
