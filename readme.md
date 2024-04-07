@@ -1,6 +1,9 @@
 # NLW - Event
 
-![image]("https://github.com/retr0lbb/NLW-UNITE-passin-native/assets/85702153/71c9c189-d9ad-4c90-ba60-7f23b6f085ca")
+<div align="center">
+    <img src="https://github.com/retr0lbb/NLW-UNITE-passin-native/assets/85702153/71c9c189-d9ad-4c90-ba60-7f23b6f085ca" />
+</div>
+
 
 Esse projeto é fruto do NLW Unite realizado pela *rocketseat*.
 O aplicativo é uma forma simples e facil de se fazer o checkin em um evento
