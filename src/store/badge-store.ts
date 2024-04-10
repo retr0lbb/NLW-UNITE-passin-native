@@ -8,7 +8,8 @@ export type BadgeStore = {
     email: String
     eventTitle: String,
     checkInURL: String,
-    image?: String
+    image?: String,
+    eventDate: String
 }
 
 type StateProps = {

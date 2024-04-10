@@ -30,11 +30,8 @@ export default function Register(){
             })
 
             if(registerResponse.data.attendeeId){
-
                 const badgeResponse = await api.get(`attendees/${registerResponse.data.attendeeId}/badge`)
-
                 badgeStore.save(badgeResponse.data.badge)
-
                 Alert.alert("Inscrição", "inscrição realizada com sucesso", [
                     {
                         text: "Ok",

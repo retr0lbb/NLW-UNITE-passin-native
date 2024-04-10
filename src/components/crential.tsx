@@ -4,6 +4,7 @@ import { colors } from "@/styles/colors";
 import QRCodeSvg from "./qrcode";
 import {BadgeStore} from "@/store/badge-store"
 import { MotiView } from "moti"
+import { AntDesign } from '@expo/vector-icons';
 
 
 type Props = {
@@ -14,6 +15,15 @@ type Props = {
 
 export default function Credential({ onChangeAvatar, onShowQRCode, data }: Props){
     const {height} = useWindowDimensions()
+    const eventDate = new Date(String(data.eventDate))
+
+    function DataFormater(data: Date): string{
+        const day = data.getDate().toString().padStart(2,"0");
+        const mouth = (data.getMonth() +1 ).toString().padStart(2,"0");
+        const year = data.getFullYear();
+
+        return `${day}/${mouth}/${year}`
+    }
     
     return(
         <MotiView 
@@ -56,11 +66,21 @@ export default function Credential({ onChangeAvatar, onShowQRCode, data }: Props
                         className="px-6 py-8 h-40 items-center 
                         self-stretch border-b border-white/10 overflow-hidden" >
                             
-                            <View className="w-full flex-row items-center justify-between">
-                                <Text className="text-zinc-50 text-sm font-bold">
-                                    {data.eventTitle}
-                                </Text>
-                                <Text className="text-zinc-50 text-sm font-bold">
+                            <View className="w-full flex-row justify-between">
+
+                                <View className="flex flex-col items-start">
+                                    <Text className="text-zinc-50 text-sm font-bold">
+                                        {data.eventTitle}
+                                    </Text>
+
+                                    <View className="flex flex-row items-center justify-center gap-1">
+                                        <AntDesign name="calendar" size={12} color={colors.white} />
+                                        <Text className="text-zinc-50 text-sm font-bold flex flex-col">{DataFormater(eventDate)}</Text>
+                                    </View>
+                                </View>
+                                
+                                
+                                <Text className="text-zinc-50 font-bold">
                                     #{String(data.id).padStart(4 , "0")}
                                 </Text>
                             </View>

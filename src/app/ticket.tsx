@@ -62,6 +62,7 @@ export default function Ticket(){
     if(!badgeStore.data?.checkInURL){
         return <Redirect href="/" />
     }
+    console.log(badgeStore.data.eventDate)
 
     return(
         <View className="flex-1 bg-green-500">
